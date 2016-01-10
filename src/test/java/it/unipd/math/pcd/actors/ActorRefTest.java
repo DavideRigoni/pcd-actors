@@ -37,7 +37,7 @@
  */
 package it.unipd.math.pcd.actors;
 
-import it.unipd.math.pcd.actors.impl.ActorSystemImpl;
+//import it.unipd.math.pcd.actors.impl.ActorSystemImpl;
 import it.unipd.math.pcd.actors.utils.ActorSystemFactory;
 import it.unipd.math.pcd.actors.utils.actors.TrivialActor;
 import it.unipd.math.pcd.actors.utils.messages.TrivialMessage;

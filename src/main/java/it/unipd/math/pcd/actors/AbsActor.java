@@ -37,6 +37,8 @@
  */
 package it.unipd.math.pcd.actors;
 
+import java.util.LinkedList;
+
 /**
  * Defines common properties of all actors.
  *
@@ -65,5 +67,31 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     protected final Actor<T> setSelf(ActorRef<T> self) {
         this.self = self;
         return this;
+    }
+
+
+    //---------------- AGGIUNTI -----------------
+
+    private LinkedList<T> messages = new LinkedList<>();
+    private LinkedList<ActorRef<T>> senders = new LinkedList<>();
+
+    @Override
+    public void addMessage(T _m, ActorRef<T> _ar){
+        synchronized (messages)
+        {
+            messages.addFirst(_m);
+            senders.add(_ar);
+        }
+    }
+
+    @Override
+    public T removeMessage(){
+        T m;
+        synchronized (messages)
+        {
+            m = messages.removeLast();
+            sender = senders.removeLast();
+        }
+        return m;
     }
 }

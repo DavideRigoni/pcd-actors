@@ -88,4 +88,8 @@ public interface ActorSystem {
         LOCAL,
         REMOTE
     }
+
+    //----------- AGGIUNTI -------
+
+    Actor<?> getUnderlyingActor(ActorRef<?> ar);
 }

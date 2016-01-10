@@ -55,4 +55,9 @@ public interface Actor<T extends Message> {
      *         the actor.
      */
     void receive(T message);
+
+    //---------- AGGIUNTI ---------------
+    void addMessage(T _m, ActorRef<T> _ar);
+
+    T removeMessage();
 }
