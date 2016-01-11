@@ -94,4 +94,26 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         }
         return m;
     }
+
+    public AbsActor(){
+        MessagesManager threadMM = new MessagesManager(this);
+        threadMM.start();
+    }
+
+    private class MessagesManager extends Thread{
+        Actor<T> a;
+        public MessagesManager(Actor<T> _a){
+            a = _a;
+        }
+
+        @Override
+        public void run() {
+            while (true){
+                receive(a.removeMessage());
+            }
+        }
+    }
 }
+
+
+

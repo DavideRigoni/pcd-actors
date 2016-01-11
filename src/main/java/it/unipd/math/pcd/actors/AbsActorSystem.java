@@ -95,6 +95,8 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
 
     public Actor<?> getUnderlyingActor(ActorRef<?> ar) {
-        return actors.get(ar);
+        synchronized (actors){
+            return actors.get(ar);
+        }
     }
 }
