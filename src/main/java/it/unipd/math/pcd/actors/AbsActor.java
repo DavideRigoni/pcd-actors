@@ -81,6 +81,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         {
             messages.addFirst(_m);
             senders.add(_ar);
+            messages.notifyAll();
         }
     }
 
@@ -89,8 +90,17 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         T m;
         synchronized (messages)
         {
+            while(messages.size() == 0)
+            {
+                try {
+                    messages.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             m = messages.removeLast();
             sender = senders.removeLast();
+            messages.notifyAll();
         }
         return m;
     }
