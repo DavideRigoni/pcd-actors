@@ -2,7 +2,6 @@ package it.unipd.math.pcd.actors.impl;
 
 import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.ActorRef;
-import it.unipd.math.pcd.actors.ActorSystem;
 import it.unipd.math.pcd.actors.Message;
 
 /**
@@ -12,7 +11,9 @@ public class implActorRefLocal implements ActorRef{
 
     @Override
     public void send(Message message, ActorRef to) {
-
+        implActorSystem as = new implActorSystem();
+        Actor a = as.getUnderlyingActor(to);
+        a.addMessage(message,this);
     }
 
     @Override
@@ -21,24 +22,5 @@ public class implActorRefLocal implements ActorRef{
             return 0;
         else
             return 1;
-    }
-
-    private class MessagesManager extends Thread{
-        Message m;
-        ActorRef to;
-        ActorRef who;
-
-        public MessagesManager(ActorRef _who, Message message, ActorRef _to){
-            m = message;
-            to = _to;
-            who = _who;
-        }
-
-        @Override
-        public void run() {
-            implActorSystem as = new implActorSystem();
-            Actor a = as.getUnderlyingActor(to);
-            a.addMessage(m,who);
-        }
     }
 }
