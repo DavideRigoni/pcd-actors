@@ -74,6 +74,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
 
     private LinkedList<T> messages = new LinkedList<>();
     private LinkedList<ActorRef<T>> senders = new LinkedList<>();
+    MessagesManager threadMM;
 
     @Override
     public void addMessage(T _m, ActorRef<T> _ar){
@@ -106,8 +107,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     }
 
     public AbsActor(){
-        MessagesManager threadMM = new MessagesManager(this);
+        threadMM = new MessagesManager(this);
         threadMM.start();
+    }
+
+    @Override
+    public void stopWorking(){
+        threadMM.interrupt();
     }
 
     private class MessagesManager extends Thread{
@@ -118,7 +124,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
 
         @Override
         public void run() {
-            while (true){
+            while (!this.isInterrupted()){
                 receive(a.removeMessage());
             }
         }

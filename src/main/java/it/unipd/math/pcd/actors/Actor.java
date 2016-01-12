@@ -60,4 +60,6 @@ public interface Actor<T extends Message> {
     void addMessage(T _m, ActorRef<T> _ar);
 
     T removeMessage();
+
+    void stopWorking();
 }
