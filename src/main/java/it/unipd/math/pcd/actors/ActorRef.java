@@ -42,6 +42,7 @@ package it.unipd.math.pcd.actors;
  * Using this reference it is possible to send a message among actors.
  *
  * @author Riccardo Cardin
+ * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */
@@ -54,4 +55,5 @@ public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
      * @param to The actor to which sending the message
      */
     void send(T message, ActorRef to);
+
 }

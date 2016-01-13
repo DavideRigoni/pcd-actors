@@ -41,6 +41,7 @@ package it.unipd.math.pcd.actors;
  * A message that can be sent among actors
  *
  * @author Riccardo Cardin
+ * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */

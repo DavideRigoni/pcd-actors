@@ -4,17 +4,16 @@ import it.unipd.math.pcd.actors.AbsActorSystem;
 import it.unipd.math.pcd.actors.ActorRef;
 
 /**
- * Created by davide on 10/01/16.
+ * Defines common properties of all actors.
+ *
+ * @author Davide Rigoni
+ * @version 1.0
+ * @since 1.0
  */
 public class implActorSystem extends AbsActorSystem{
 
-    public implActorSystem(){
-
-    }
-
-
     @Override
-    protected ActorRef createActorReference(ActorMode mode) {
+    protected ActorRef createActorReference(ActorMode mode) throws  IllegalArgumentException{
         if(mode==ActorMode.LOCAL)
             return new implActorRefLocal();
         else

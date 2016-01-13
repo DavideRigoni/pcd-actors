@@ -1,7 +1,7 @@
 git remote add rcardin #repo
-git fetch cardin 
+git fetch rcardin 
 git checkout master 
-git merge cardin/master 
+git merge rcardin/master 
 git push origin master
 
 

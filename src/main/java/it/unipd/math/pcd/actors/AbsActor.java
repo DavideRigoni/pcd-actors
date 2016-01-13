@@ -43,6 +43,7 @@ import java.util.LinkedList;
  * Defines common properties of all actors.
  *
  * @author Riccardo Cardin
+ * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */
@@ -70,10 +71,16 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     }
 
 
-    //---------------- AGGIUNTI -----------------
+    //---------------- ADDED METHODS -----------------
 
+    /**
+     * LinkedList to keep the message{@code messages} and the corresponding sender {@code senders}
+     */
     private LinkedList<T> messages = new LinkedList<>();
     private LinkedList<ActorRef<T>> senders = new LinkedList<>();
+    /**
+     * Thread needed to take messages from queue and do the jobs
+     */
     MessagesManager threadMM;
 
     @Override
@@ -106,6 +113,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         return m;
     }
 
+    /**
+     * Constructor that start the thread
+     */
     public AbsActor(){
         threadMM = new MessagesManager(this);
         threadMM.start();
@@ -116,6 +126,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         threadMM.interrupt();
     }
 
+    /**
+     * Class that take messages from queue and do the jobs
+     */
     private class MessagesManager extends Thread{
         Actor<T> a;
         public MessagesManager(Actor<T> _a){

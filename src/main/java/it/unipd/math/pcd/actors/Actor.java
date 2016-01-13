@@ -42,6 +42,7 @@ package it.unipd.math.pcd.actors;
  * messages of a defined type.
  *
  * @author Riccardo Cardin
+ * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */
@@ -56,10 +57,24 @@ public interface Actor<T extends Message> {
      */
     void receive(T message);
 
-    //---------- AGGIUNTI ---------------
+    //---------- ADDED METHODS ---------------
+
+    /**
+     * Puts the message into the queue
+     * @param _m The message
+     * @param _ar The reference to the actorRef
+     */
     void addMessage(T _m, ActorRef<T> _ar);
 
+    /**
+     * Remove one message from the queue
+     *
+     * @return The next message from the queue
+     */
     T removeMessage();
 
+    /**
+     * Stop actor
+     */
     void stopWorking();
 }

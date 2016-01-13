@@ -46,6 +46,7 @@ import java.util.Map;
  * A map-based implementation of the actor system.
  *
  * @author Riccardo Cardin
+ * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */
@@ -83,11 +84,15 @@ public abstract class AbsActorSystem implements ActorSystem {
     protected abstract ActorRef createActorReference(ActorMode mode);
 
 
-    //------------ AGGIUNTI ---------------
+    //------------ ADDED METHODS ---------------
     @Override
-    public void stop(ActorRef<?> actor) {
+    public void stop(ActorRef<?> actor) throws NoSuchActorException {
         Actor a = actors.remove(actor);
-        a.stopWorking();
+        if(a != null)
+            a.stopWorking();
+        else
+            throw new NoSuchActorException();
+
     }
 
     @Override
@@ -97,9 +102,14 @@ public abstract class AbsActorSystem implements ActorSystem {
         }
     }
 
-    public Actor<?> getUnderlyingActor(ActorRef<?> ar) {
+    @Override
+    public Actor<?> getUnderlyingActor(ActorRef<?> ar) throws  NoSuchActorException{
         synchronized (actors){
-            return actors.get(ar);
+            Actor<?> a = actors.get(ar);
+            if(a != null)
+                return a;
+            else
+                throw new NoSuchActorException();
         }
     }
 }

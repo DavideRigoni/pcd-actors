@@ -5,7 +5,11 @@ import it.unipd.math.pcd.actors.ActorRef;
 import it.unipd.math.pcd.actors.Message;
 
 /**
- * Created by davide on 10/01/16.
+ * Defines common properties of all actors.
+ *
+ * @author Davide Rigoni
+ * @version 1.0
+ * @since 1.0
  */
 public class implActorRefLocal implements ActorRef{
 
