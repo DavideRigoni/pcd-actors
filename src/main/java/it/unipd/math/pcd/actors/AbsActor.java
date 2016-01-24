@@ -37,6 +37,8 @@
  */
 package it.unipd.math.pcd.actors;
 
+import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
+
 import java.util.LinkedList;
 
 /**
@@ -76,8 +78,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     /**
      * LinkedList to keep the message{@code messages} and the corresponding sender {@code senders}
      */
-    private LinkedList<T> messages = new LinkedList<>();
-    private LinkedList<ActorRef<T>> senders = new LinkedList<>();
+    private final LinkedList<T> messages = new LinkedList<>();
+    private final LinkedList<ActorRef<T>> senders = new LinkedList<>();
     /**
      * Thread needed to take messages from queue and do the jobs
      */

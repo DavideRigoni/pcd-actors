@@ -55,7 +55,7 @@ public abstract class AbsActorSystem implements ActorSystem {
     /**
      * Associates every Actor created with an identifier.
      */
-    private static Map<ActorRef<?>, Actor<?>> actors = new HashMap<>();
+    private final static Map<ActorRef<?>, Actor<?>> actors = new HashMap<>();
 
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
@@ -68,7 +68,10 @@ public abstract class AbsActorSystem implements ActorSystem {
             // Create the new instance of the actor
             Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
-            actors.put(reference, actorInstance);
+            //------------ ADDED METHODS ---------------
+            synchronized (actors) {
+                actors.put(reference, actorInstance);
+            }
 
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
@@ -87,18 +90,21 @@ public abstract class AbsActorSystem implements ActorSystem {
     //------------ ADDED METHODS ---------------
     @Override
     public void stop(ActorRef<?> actor) throws NoSuchActorException {
-        Actor a = actors.remove(actor);
-        if(a != null)
-            a.stopWorking();
-        else
-            throw new NoSuchActorException();
-
+        synchronized (actors) {
+            Actor<?> a = actors.remove(actor);
+            if (a != null)
+                a.stopWorking();
+            else
+                throw new NoSuchActorException();
+        }
     }
 
     @Override
     public void stop() {
-        for (Map.Entry<ActorRef<?>,Actor<?>> entry : actors.entrySet()) {
-            this.stop(entry.getKey());
+        synchronized (actors) {
+            for (Map.Entry<ActorRef<?>, Actor<?>> entry : actors.entrySet()) {
+                this.stop(entry.getKey());
+            }
         }
     }
 
