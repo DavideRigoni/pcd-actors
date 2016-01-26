@@ -71,7 +71,8 @@ public interface Actor<T extends Message> {
      *
      * @return The next message from the queue
      */
-    T removeMessage();
+    //--------------Added eventh------------------
+    T removeMessage() throws InterruptedException;
 
     /**
      * Stop actor

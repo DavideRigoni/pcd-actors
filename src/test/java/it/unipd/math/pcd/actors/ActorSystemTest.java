@@ -110,22 +110,17 @@ public class ActorSystemTest {
      * Added by Davide Rigoni
      */
     //A REMOVED ACTOR CAN'T SEND MESSAGE
-    @Test
-    public void shouldStopAnActorAndThisCouldNotBeAbleToSendMessage() {
-        ActorRef ref1 = system.actorOf(TrivialActor.class);
-        ActorRef ref2 = system.actorOf(TrivialActor.class);
-        system.stop(ref1);
-        //ref1.send(new TrivialMessage(), ref2);
-    }
-
-    /* TEST SYNCRONIZED TO ACTORSYSTEM
     @Test(expected = NoSuchActorException.class)
     public void shouldStopAnActorAndThisCouldNotBeAbleToSendMessage() {
         ActorRef ref1 = system.actorOf(TrivialActor.class);
-        ActorRef ref2 = system.actorOf(TrivialActor.class);
-        system.stop(ref1);
-        ref1.send(new TrivialMessage(), ref2);
-    }*/
+        for (int i = 0;i<10000;i++) {
+            ActorRef ref2 = system.actorOf(TrivialActor.class);
+            system.stop(ref2);
+
+            ref2.send(new TrivialMessage(), ref1);
+        }
+    }
+
 
 
 }

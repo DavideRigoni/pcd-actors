@@ -109,7 +109,7 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
 
     @Override
-    public Actor<?> getUnderlyingActor(ActorRef<?> ar) throws  NoSuchActorException{
+    public Actor<?> getUnderlyingActor(ActorRef<?> ar){
         synchronized (actors){
             Actor<?> a = actors.get(ar);
             if(a != null)

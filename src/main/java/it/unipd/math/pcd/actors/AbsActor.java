@@ -80,15 +80,22 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
      */
     private final LinkedList<T> messages = new LinkedList<>();
     private final LinkedList<ActorRef<T>> senders = new LinkedList<>();
+
     /**
-     * Thread needed to take messages from queue and do the jobs
+     * Thread have to take messages from queue and do the jobs
      */
-    MessagesManager threadMM;
+    private MessagesManager threadMM;
+
+    /**
+     * Actor state. When it is stopped sWorking is false;
+     */
+    private volatile boolean sWorking;
 
     @Override
     public void addMessage(T _m, ActorRef<T> _ar){
         synchronized (messages)
         {
+            if(!sWorking)throw  new NoSuchActorException();
             messages.addFirst(_m);
             senders.add(_ar);
             messages.notifyAll();
@@ -96,17 +103,14 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     }
 
     @Override
-    public T removeMessage(){
+    public T removeMessage() throws InterruptedException {
         T m;
         synchronized (messages)
         {
+            if(!sWorking) throw new InterruptedException();
             while(messages.size() == 0)
             {
-                try {
-                    messages.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                messages.wait();
             }
             m = messages.removeLast();
             sender = senders.removeLast();
@@ -115,33 +119,45 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         return m;
     }
 
+    @Override
+    public void stopWorking(){
+        synchronized (messages) {
+            if(!sWorking) throw new NoSuchActorException();
+            //stop threads and put object state to "stop working"
+            sWorking = false;
+            threadMM.interrupt();
+        }
+    }
+
+
     /**
      * Constructor that start the thread
      */
     public AbsActor(){
-        threadMM = new MessagesManager(this);
+        sWorking = true;
+        threadMM = new MessagesManager();
         threadMM.start();
-    }
-
-    @Override
-    public void stopWorking(){
-        threadMM.interrupt();
     }
 
     /**
      * Class that take messages from queue and do the jobs
      */
     private class MessagesManager extends Thread{
-        Actor<T> a;
-        public MessagesManager(Actor<T> _a){
-            a = _a;
-        }
-
         @Override
         public void run() {
+            T msg;
+            System.out.println("Creazione TH: " + this.getName());
             while (!this.isInterrupted()){
-                receive(a.removeMessage());
+                try{
+                    msg = removeMessage();
+                    receive(msg);
+                }
+                catch (InterruptedException e)
+                {
+                    //System.out.println("Interrotto TH: " + this.getName());
+                }
             }
+            System.out.println("Fine TH: " + this.getName());
         }
     }
 }

@@ -3,6 +3,7 @@ package it.unipd.math.pcd.actors.impl;
 import it.unipd.math.pcd.actors.Actor;
 import it.unipd.math.pcd.actors.ActorRef;
 import it.unipd.math.pcd.actors.Message;
+import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
 /**
  * Defines common properties of all actors.
