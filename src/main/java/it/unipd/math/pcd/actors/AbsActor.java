@@ -102,8 +102,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         T m;
         synchronized (messages)
         {
-            if(!sWorking) throw new InterruptedException();
-            while(messages.size() == 0)
+            while(messages.size() == 0 )
             {
                 messages.wait();
             }
@@ -139,15 +138,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         @Override
         public void run() {
             T msg;
-            while (!this.isInterrupted()){
-                try{
-                    msg = removeMessage();
-                    receive(msg);
-                }
-                catch (InterruptedException e)
-                {
-                    //System.out.println("Interrotto TH: " + this.getName());
-                }
+            while (!this.isInterrupted() || messages.size() > 0){
+                    try {
+                        msg = removeMessage();
+                        receive(msg);
+                    } catch (InterruptedException e) {
+                        //System.out.println("Interrotto TH: " + this.getName());
+                    }
             }
         }
     }
