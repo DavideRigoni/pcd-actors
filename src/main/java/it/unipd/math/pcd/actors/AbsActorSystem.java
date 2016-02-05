@@ -24,17 +24,11 @@
  * Please, insert description here.
  *
  * @author Riccardo Cardin
+ * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */
 
-/**
- * Please, insert description here.
- *
- * @author Riccardo Cardin
- * @version 1.0
- * @since 1.0
- */
 package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
