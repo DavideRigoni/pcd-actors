@@ -40,6 +40,8 @@ package it.unipd.math.pcd.actors;
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Defines common properties of all actors.
@@ -78,8 +80,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     /**
      * LinkedList to keep the message{@code messages} and the corresponding sender {@code senders}
      */
-    private final LinkedList<T> messages = new LinkedList<>();
-    private final LinkedList<ActorRef<T>> senders = new LinkedList<>();
+    private final Queue<T> messages = new ConcurrentLinkedQueue<>();
+    private final Queue<ActorRef<T>> senders = new ConcurrentLinkedQueue<>();
 
     /**
      * Thread have to take messages from queue and do the jobs
@@ -96,7 +98,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         synchronized (messages)
         {
             if(!sWorking)throw  new NoSuchActorException();
-            messages.addFirst(_m);
+            messages.add(_m);
             senders.add(_ar);
             messages.notifyAll();
         }
@@ -112,8 +114,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
             {
                 messages.wait();
             }
-            m = messages.removeLast();
-            sender = senders.removeLast();
+            m = messages.poll();
+            sender = senders.poll();
             messages.notifyAll();
         }
         return m;
