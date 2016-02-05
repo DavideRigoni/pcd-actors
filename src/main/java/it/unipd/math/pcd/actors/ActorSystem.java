@@ -45,7 +45,6 @@ package it.unipd.math.pcd.actors;
  * </ul>
  *
  * @author Riccardo Cardin
- * @author Davide Rigoni
  * @version 1.0
  * @since 1.0
  */
@@ -89,14 +88,4 @@ public interface ActorSystem {
         LOCAL,
         REMOTE
     }
-
-    //----------- ADDED METHODS -------
-
-    /**
-     * Get a reference to the actor corresponding to the actorRef
-     *
-     * @param ar The ActorRef
-     * @return  A reference to the actor
-     */
-    Actor<?> getUnderlyingActor(ActorRef<?> ar);
 }

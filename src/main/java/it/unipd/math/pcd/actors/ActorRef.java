@@ -55,5 +55,4 @@ public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
      * @param to The actor to which sending the message
      */
     void send(T message, ActorRef to);
-
 }

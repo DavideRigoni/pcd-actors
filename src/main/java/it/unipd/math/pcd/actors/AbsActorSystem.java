@@ -93,7 +93,7 @@ public abstract class AbsActorSystem implements ActorSystem {
         synchronized (actors) {
             Actor<?> a = actors.remove(actor);
             if (a != null)
-                a.stopWorking();
+                ((AbsActor)a).stopWorking();
             else
                 throw new NoSuchActorException();
         }
@@ -108,7 +108,6 @@ public abstract class AbsActorSystem implements ActorSystem {
         }
     }
 
-    @Override
     public Actor<?> getUnderlyingActor(ActorRef<?> ar){
         synchronized (actors){
             Actor<?> a = actors.get(ar);

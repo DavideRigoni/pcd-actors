@@ -89,9 +89,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     /**
      * Actor state. When it is stopped sWorking is false;
      */
-    private volatile boolean sWorking;
+    private boolean sWorking;
 
-    @Override
+
     public void addMessage(T _m, ActorRef<T> _ar){
         synchronized (messages)
         {
@@ -102,7 +102,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         }
     }
 
-    @Override
+
     public T removeMessage() throws InterruptedException {
         T m;
         synchronized (messages)
@@ -119,10 +119,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         return m;
     }
 
-    @Override
     public void stopWorking(){
         synchronized (messages) {
-            if(!sWorking) throw new NoSuchActorException();
             //stop threads and put object state to "stop working"
             sWorking = false;
             threadMM.interrupt();
@@ -146,7 +144,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         @Override
         public void run() {
             T msg;
-            System.out.println("Creazione TH: " + this.getName());
             while (!this.isInterrupted()){
                 try{
                     msg = removeMessage();
@@ -157,7 +154,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
                     //System.out.println("Interrotto TH: " + this.getName());
                 }
             }
-            System.out.println("Fine TH: " + this.getName());
         }
     }
 }

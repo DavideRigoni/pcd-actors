@@ -56,26 +56,4 @@ public interface Actor<T extends Message> {
      *         the actor.
      */
     void receive(T message);
-
-    //---------- ADDED METHODS ---------------
-
-    /**
-     * Puts the message into the queue
-     * @param _m The message
-     * @param _ar The reference to the actorRef
-     */
-    void addMessage(T _m, ActorRef<T> _ar);
-
-    /**
-     * Remove one message from the queue
-     *
-     * @return The next message from the queue
-     */
-    //--------------Added eventh------------------
-    T removeMessage() throws InterruptedException;
-
-    /**
-     * Stop actor
-     */
-    void stopWorking();
 }

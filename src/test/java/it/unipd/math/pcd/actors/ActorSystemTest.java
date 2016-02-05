@@ -116,7 +116,6 @@ public class ActorSystemTest {
         for (int i = 0;i<10000;i++) {
             ActorRef ref2 = system.actorOf(TrivialActor.class);
             system.stop(ref2);
-
             ref2.send(new TrivialMessage(), ref1);
         }
     }
